@@ -1,8 +1,8 @@
 module.exports = {
   development: {
-    username: '<YOUR_USER_NAME>',
+    username: 'process.env.USER',
     password: null,
-    database: 'cra_ecom_development',
+    database: 'room_booker_development',
     host: '127.0.0.1',
     dialect: 'postgres',
   },
