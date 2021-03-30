@@ -1,27 +1,33 @@
-export default function orderItemModel(sequelize, DataTypes) {
-  return sequelize.define('order_items', {
+export default function initBookingModel(sequelize, DataTypes) {
+  return sequelize.define('booking', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    quantity: {
-      type: DataTypes.INTEGER,
-    },
-    order_id: {
+    user_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'orders',
+        model: 'users',
         key: 'id',
       },
     },
-    item_id: {
+    room_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'items',
+        model: 'rooms',
         key: 'id',
       },
+    },
+    booking_date: {
+      type: DataTypes.DATE,
+    },
+    start_time: {
+      type: DataTypes.DATE,
+    },
+    end_time: {
+      type: DataTypes.DATE,
     },
     created_at: {
       allowNull: false,

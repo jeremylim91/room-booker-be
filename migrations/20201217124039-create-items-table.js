@@ -12,7 +12,7 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull:false,
+        allowNull: false,
       },
       password: {
         type: Sequelize.STRING,
@@ -67,30 +67,29 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id:{
+      user_id: {
         type: Sequelize.INTEGER,
-        references:{
-          model:users,
-          key:'id'
+        references: {
+          model: 'users',
+          key: 'id',
         },
       },
-      room_id:{
+      room_id: {
         type: Sequelize.INTEGER,
-        references:{
-          model:'rooms',
-          key:'id',
+        references: {
+          model: 'rooms',
+          key: 'id',
         },
       },
       booking_date: {
-      allowNull: false,
-      type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
-      start_time:{
-        type: Sequelize.DATE
-      }, 
-      end_time:{
-        type: Sequelize.DATE
-      }, 
+      start_time: {
+        type: Sequelize.DATE,
+      },
+      end_time: {
+        type: Sequelize.DATE,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -101,36 +100,36 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('attendees', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      user_id:{
-        type: Sequelize.INTEGER,
-        references:{
-          model:users,
-          key:'id'
-        },
-      },
-      booking_id:{
-        type: Sequelize.INTEGER,
-        references:{
-          model:'bookings',
-          key:'id',
-        },
-      },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-    });
+    // await queryInterface.createTable('attendees', {
+    //   id: {
+    //     allowNull: false,
+    //     autoIncrement: true,
+    //     primaryKey: true,
+    //     type: Sequelize.INTEGER,
+    //   },
+    //   user_id: {
+    //     type: Sequelize.INTEGER,
+    //     references: {
+    //       model: 'users',
+    //       key: 'id',
+    //     },
+    //   },
+    //   booking_id: {
+    //     type: Sequelize.INTEGER,
+    //     references: {
+    //       model: 'bookings',
+    //       key: 'id',
+    //     },
+    //   },
+    //   created_at: {
+    //     allowNull: false,
+    //     type: Sequelize.DATE,
+    //   },
+    //   updated_at: {
+    //     allowNull: false,
+    //     type: Sequelize.DATE,
+    //   },
+    // });
   },
 
   down: async (queryInterface) => {
