@@ -29,6 +29,9 @@ export default function initBookingModel(sequelize, DataTypes) {
     end_time: {
       type: DataTypes.DATE,
     },
+    agenda: {
+      type: DataTypes.TEXT,
+    },
     created_at: {
       allowNull: false,
       type: DataTypes.DATE,

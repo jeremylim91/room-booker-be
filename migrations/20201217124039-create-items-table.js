@@ -90,6 +90,9 @@ module.exports = {
       end_time: {
         type: Sequelize.DATE,
       },
+      agenda: {
+        type: Sequelize.TEXT,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -136,6 +139,5 @@ module.exports = {
     await queryInterface.dropTable('users');
     await queryInterface.dropTable('rooms');
     await queryInterface.dropTable('bookings');
-    await queryInterface.dropTable('attendees');
   },
 };
