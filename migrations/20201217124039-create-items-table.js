@@ -136,8 +136,8 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
+    await queryInterface.dropTable('bookings');
     await queryInterface.dropTable('users');
     await queryInterface.dropTable('rooms');
-    await queryInterface.dropTable('bookings');
   },
 };
