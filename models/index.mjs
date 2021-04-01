@@ -3,10 +3,9 @@ import url from 'url';
 import allConfig from '../config/config.js';
 
 // import models
-import initUserModel from './initUserModel.mjs';
-import initRoomModel from './initRoomModel.mjs';
-import initBookingModel from './initBookingModel.mjs';
-import initAttendeeModel from './initAttendeeModel.mjs';
+import initUserModel from './user.mjs';
+import initRoomModel from './room.mjs';
+import initBookingModel from './booking.mjs';
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -39,16 +38,19 @@ if (env === 'production') {
 db.User = initUserModel(sequelize, Sequelize.DataTypes);
 db.Room = initRoomModel(sequelize, Sequelize.DataTypes);
 db.Booking = initBookingModel(sequelize, Sequelize.DataTypes);
-db.Attendee = initAttendeeModel(sequelize, Sequelize.DataTypes);
 
 // Define associations btw models
 
+// -----define the r/n btw room and booking (one to many) ------
+db.Room.hasMany(db.Booking);
+db.Booking.belongsTo(db.Room);
+
 // -----define the r/n btw user and booking when user is a booker (i.e. many to one r/s) ------
 db.User.hasMany(db.Booking);
-db.Booking.belongsTo(db.User, { as: 'booker' });
+db.Booking.belongsTo(db.User, { as: 'booker', foreignKey: 'user_id' });
 // -----define the r/n btw user and booking when user is an attendee (i.e. many to many r/s) ------
-db.User.belongsToMany(db.Booking, { as: 'meetings' });
-db.Booking.belongsToMany(db.User, { as: 'attendees' });
+db.User.belongsToMany(db.Booking, { through: 'meetings' });
+db.Booking.belongsToMany(db.User, { through: 'attendees' });
 // -------------------------------------------------------
 
 db.sequelize = sequelize;
