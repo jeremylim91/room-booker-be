@@ -103,39 +103,40 @@ module.exports = {
       },
     });
 
-    // await queryInterface.createTable('attendees', {
-    //   id: {
-    //     allowNull: false,
-    //     autoIncrement: true,
-    //     primaryKey: true,
-    //     type: Sequelize.INTEGER,
-    //   },
-    //   user_id: {
-    //     type: Sequelize.INTEGER,
-    //     references: {
-    //       model: 'users',
-    //       key: 'id',
-    //     },
-    //   },
-    //   booking_id: {
-    //     type: Sequelize.INTEGER,
-    //     references: {
-    //       model: 'bookings',
-    //       key: 'id',
-    //     },
-    //   },
-    //   created_at: {
-    //     allowNull: false,
-    //     type: Sequelize.DATE,
-    //   },
-    //   updated_at: {
-    //     allowNull: false,
-    //     type: Sequelize.DATE,
-    //   },
-    // });
+    await queryInterface.createTable('user_bookings', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+      },
+      booking_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'bookings',
+          key: 'id',
+        },
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
   },
 
   down: async (queryInterface) => {
+    await queryInterface.dropTable('user_bookings');
     await queryInterface.dropTable('bookings');
     await queryInterface.dropTable('users');
     await queryInterface.dropTable('rooms');

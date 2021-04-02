@@ -49,8 +49,8 @@ db.Booking.belongsTo(db.Room);
 db.User.hasMany(db.Booking);
 db.Booking.belongsTo(db.User, { as: 'booker', foreignKey: 'user_id' });
 // -----define the r/n btw user and booking when user is an attendee (i.e. many to many r/s) ------
-db.User.belongsToMany(db.Booking, { through: 'meetings' });
-db.Booking.belongsToMany(db.User, { through: 'attendees' });
+db.User.belongsToMany(db.Booking, { through: 'user_bookings' });
+db.Booking.belongsToMany(db.User, { through: 'user_bookings' });
 // -------------------------------------------------------
 
 db.sequelize = sequelize;
