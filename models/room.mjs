@@ -6,26 +6,26 @@ export default function initRoomModel(sequelize, DataTypes) {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    room_name: {
+    roomName: {
       type: DataTypes.STRING,
     },
-    max_occupancy: {
+    maxOccupancy: {
       type: DataTypes.INTEGER,
     },
-    opening_time: {
+    openingTime: {
       type: DataTypes.TIME,
     },
-    closing_time: {
+    closingTime: {
       type: DataTypes.TIME,
     },
     thumbnail: {
       type: DataTypes.STRING,
     },
-    created_at: {
+    createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
     },
-    updated_at: {
+    updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
     },

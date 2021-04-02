@@ -6,37 +6,37 @@ export default function initBookingModel(sequelize, DataTypes) {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'users',
         key: 'id',
       },
     },
-    room_id: {
+    roomId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'rooms',
         key: 'id',
       },
     },
-    booking_date: {
+    bookingDate: {
       type: DataTypes.DATE,
     },
-    start_time: {
+    startTime: {
       type: DataTypes.DATE,
     },
-    end_time: {
+    endTime: {
       type: DataTypes.DATE,
     },
     agenda: {
       type: DataTypes.TEXT,
     },
-    created_at: {
+    createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
     },
-    updated_at: {
+    updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
     },
