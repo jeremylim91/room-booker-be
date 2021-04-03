@@ -19,10 +19,11 @@ module.exports = {
       },
       is_admin: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,
-        default: false,
+        defaultValue: false,
       },
       created_at: {
         allowNull: false,

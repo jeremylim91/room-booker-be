@@ -14,9 +14,28 @@ export default function initUsersController(db) {
   };
   const deleteUser = async (req, res) => {
     try {
-      const userInstance = await db.User.findByPk(req.body.userId);
+      const userInstance = await db.User.findByPk(req.params.userId);
       userInstance.isDeleted = true;
       await userInstance.save();
+      res.send();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addUser = async (req, res) => {
+    const {
+      email, username, password, isAdmin,
+    } = req.body.newUserDetails;
+    try {
+      const userInstance = await db.User.create({
+        email,
+        username,
+        password: '1234567890', /* Rmb to hash this after implementing user auth */
+        isAdmin,
+      });
+      userInstance.isDeleted = true;
+      await userInstance.save();
+      res.send();
     } catch (error) {
       console.log(error);
     }
@@ -25,5 +44,6 @@ export default function initUsersController(db) {
   return {
     index,
     deleteUser,
+    addUser,
   };
 }
