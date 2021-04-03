@@ -1,3 +1,5 @@
+const hasher = require('../utils/passwordRelatedFns.js');
+
 export default function initUsersController(db) {
   const index = async (req, res) => {
     try {
@@ -30,7 +32,7 @@ export default function initUsersController(db) {
       const userInstance = await db.User.create({
         email,
         username,
-        password: '1234567890', /* Rmb to hash this after implementing user auth */
+        password: hasher.getHashedString(password || 'password1'),
         isAdmin,
       });
       userInstance.isDeleted = true;
