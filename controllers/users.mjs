@@ -1,11 +1,12 @@
-const hasher = require('../utils/passwordRelatedFns.js');
+// const hasher = require('../utils/passwordRelatedFns.js');
+import getHashedString from '../utils/passwordRelatedFns.mjs';
 
 export default function initUsersController(db) {
   const index = async (req, res) => {
     try {
       const allUsers = await db.User.findAll({
         where: {
-          is_deleted: false,
+          isDeleted: false,
         },
         attributes: ['id', 'username'],
       });
@@ -15,28 +16,42 @@ export default function initUsersController(db) {
     }
   };
   const deleteUser = async (req, res) => {
+    const { usersToDelete } = req.body;
+
+    const listOfUserIdsToDelete = [];
+    usersToDelete.forEach((elem) => listOfUserIdsToDelete.push(elem.id));
+
     try {
-      const userInstance = await db.User.findByPk(req.params.userId);
-      userInstance.isDeleted = true;
-      await userInstance.save();
+      const userInstance = await db.User.update(
+        { isDeleted: true },
+        {
+          where:
+          { id: listOfUserIdsToDelete },
+        },
+      );
+      console.log(userInstance);
       res.send();
     } catch (error) {
       console.log(error);
     }
   };
-  const addUser = async (req, res) => {
+  const createUser = async (req, res) => {
     const {
       email, username, password, isAdmin,
-    } = req.body.newUserDetails;
+    } = req.body.localState;
+    console.log(email);
+    console.log(username);
+    console.log(password);
+    console.log(isAdmin);
+
     try {
       const userInstance = await db.User.create({
         email,
         username,
-        password: hasher.getHashedString(password || 'password1'),
+        password: getHashedString(password || 'password1'),
         isAdmin,
       });
-      userInstance.isDeleted = true;
-      await userInstance.save();
+
       res.send();
     } catch (error) {
       console.log(error);
@@ -46,6 +61,6 @@ export default function initUsersController(db) {
   return {
     index,
     deleteUser,
-    addUser,
+    createUser,
   };
 }
