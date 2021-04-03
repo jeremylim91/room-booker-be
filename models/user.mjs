@@ -18,6 +18,10 @@ export default function initUserModel(sequelize, DataTypes) {
     isAdmin: {
       type: DataTypes.BOOLEAN,
     },
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      default: false,
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
