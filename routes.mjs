@@ -8,6 +8,7 @@ import initBookingsController from './controllers/bookings.mjs';
 export default function routes(app) {
   const UsersController = initUsersController(db);
   app.get('/users/findAll', UsersController.index);
+  app.put('/users/delete/:userId', UsersController.deleteUser);
 
   const RoomsController = initRoomsController(db);
   app.get('/rooms', RoomsController.index);
