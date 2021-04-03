@@ -1,7 +1,7 @@
 // import { getRandomNumInRange, getRandomDateInRange } from '../utils/seederHelperFns.mjs';
 const faker = require('faker');
-const jsSHA = require('jssha');
 const helpers = require('../utils/seederHelperFns.js');
+const hasher = require('../utils/passwordRelatedFns.js');
 
 const { getRandomDateInRange, getRandomNumInRange, removeSpacesInString } = helpers;
 const sampleDate = getRandomDateInRange(new Date(2021, 2, 1), new Date(2021, 8, 1));
@@ -12,16 +12,13 @@ module.exports = {
     USERS TABLE
     ============================================== */
     const usersList = [];
-    const shaObj = new jsSHA('SHA-512', 'TEXT', { encoding: 'UTF8' });
-    shaObj.update('password');
-    const hashedPassword = shaObj.getHash('HEX');
 
     for (let i = 0; i < 20; i += 1) {
       const name = faker.name.findName();
       usersList.push({
         username: name,
         email: `${removeSpacesInString(name)}@gmail.com`,
-        password: hashedPassword,
+        password: hasher.getHashedString('password1'),
         is_admin: false,
         created_at: new Date(),
         updated_at: new Date(),
@@ -30,7 +27,7 @@ module.exports = {
     usersList.push({
       username: 'jon',
       email: 'jon@gmail.com',
-      password: hashedPassword,
+      password: hasher.getHashedString('password1'),
       is_admin: false,
       created_at: new Date(),
       updated_at: new Date(),
