@@ -1,12 +1,47 @@
 export default function initBookingsController(db) {
-  console.log('inside initBookingsController');
-
   // display all the bookings related to a specific room
   const index = async (req, res) => {
-    const { roomId } = req.params;
     try {
       const bookings = await db.Booking.findAll();
       res.send(bookings);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const bookingsByRoomId = async (req, res) => {
+    try {
+      const bookings = await db.Booking.findAll(
+        {
+          where: {
+            roomId: req.params.roomId,
+          },
+        },
+      );
+      res.send(bookings);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const bookingsByUserId = async (req, res) => {
+    const { loggedInUserId } = req.cookies;
+    console.log('loggedInUserId is:');
+    console.log(loggedInUserId);
+    try {
+      const userTaggedMeetings = await db.Booking.findAll(
+        {
+          where: {
+            userId: loggedInUserId,
+          },
+        },
+      );
+
+      // get the user instance bsed on user's id in cookies
+      const userInstance = await db.User.findByPk(req.cookies.loggedInUserId);
+      const userBookedMeetings = await userInstance.getMeeting();
+
+      const userMtgs = { userBookedMeetings, userTaggedMeetings };
+      res.send(userMtgs);
     } catch (error) {
       console.log(error);
     }
@@ -16,18 +51,14 @@ export default function initBookingsController(db) {
       roomId, startTime, endTime, agenda, attendees,
     } = req.body.meetingDetails;
 
-    console.log('attendees is:');
-    console.log(attendees);
     try {
       const newBookingInstance = await db.Booking.create({
-        userId: 1, /* Update this after login implemented */
+        userId: req.cookies.loggedInUserId,
         roomId,
         startTime,
         endTime,
         agenda,
       });
-      console.log('newBookingInstance is:');
-      console.log(newBookingInstance);
       attendees.forEach((attendee) => {
         // db.User.addMeetings([newBookingInstance, attendee.id]);
         newBookingInstance.addUser(attendee.id);
@@ -37,8 +68,28 @@ export default function initBookingsController(db) {
     }
     res.send();
   };
+  const getMtgAttendees = async (req, res) => {
+    const { bookingId } = req.params;
+    console.log('bookingId is:');
+    console.log(bookingId);
+
+    try {
+      // get the instance of this booking
+      const bookingInstance = await db.Booking.findByPk(parseInt(bookingId, 10));
+
+      // query through table to find all attendees
+      const mtgAttendees = await bookingInstance.getAttendee({ where: { isDeleted: false } });
+      res.send(mtgAttendees);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     index,
     add,
+    bookingsByUserId,
+    bookingsByRoomId,
+    getMtgAttendees,
   };
 }
