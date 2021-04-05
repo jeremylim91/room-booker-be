@@ -4,7 +4,6 @@ const helpers = require('../utils/seederHelperFns.js');
 const hasher = require('../utils/passwordRelatedFns.js');
 
 const { getRandomDateInRange, getRandomNumInRange, removeSpacesInString } = helpers;
-const sampleDate = getRandomDateInRange(new Date(2021, 2, 1), new Date(2021, 8, 1));
 
 module.exports = {
   up: async (queryInterface) => {
