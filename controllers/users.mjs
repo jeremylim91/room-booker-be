@@ -1,7 +1,45 @@
 // const hasher = require('../utils/passwordRelatedFns.js');
-import getHashedString from '../utils/passwordRelatedFns.mjs';
+import { getHashedString, convertUserIdToHash } from '../utils/passwordRelatedFns.mjs';
+
+// const domainOption = { domain: 'http://localhost:3000' };
 
 export default function initUsersController(db) {
+  const signIn = async (req, res) => {
+    const { emailInput, passwordInput } = req.body;
+
+    // hash the user-entered password so tt it can be compared against what we have in the db
+    const hashedPassword = getHashedString(passwordInput);
+    try {
+      const userInstance = await db.User.findOne({
+        where: {
+          email: emailInput,
+          password: hashedPassword,
+          isDeleted: false,
+        },
+      });
+      if (!userInstance) {
+        res.send({ auth: false });
+        return;
+      }
+
+      res.cookie('loggedInEmail', userInstance.email);
+      res.cookie('loggedInUserId', userInstance.id);
+      res.cookie('loggedInHash', convertUserIdToHash(userInstance.id));
+      if (userInstance.dataValues.isAdmin) res.cookie('isAdmin', userInstance.dataValues.isAdmin);
+      res.send({ auth: true, user: userInstance });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const signOut = async (req, res) => {
+    res.clearCookie('loggedInHash');
+    res.clearCookie('loggedInUserId');
+    res.clearCookie('loggedInEmail');
+    res.clearCookie('isAdmin');
+    res.send({ message: 'signed out' });
+  };
+
   const index = async (req, res) => {
     try {
       const allUsers = await db.User.findAll({
@@ -59,6 +97,8 @@ export default function initUsersController(db) {
   };
 
   return {
+    signIn,
+    signOut,
     index,
     deleteUser,
     createUser,
