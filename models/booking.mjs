@@ -32,6 +32,10 @@ export default function initBookingModel(sequelize, DataTypes) {
     agenda: {
       type: DataTypes.TEXT,
     },
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,

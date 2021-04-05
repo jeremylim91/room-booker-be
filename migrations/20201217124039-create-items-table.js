@@ -129,6 +129,10 @@ module.exports = {
           key: 'id',
         },
       },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
