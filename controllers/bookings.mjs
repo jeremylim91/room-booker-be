@@ -32,13 +32,14 @@ export default function initBookingsController(db) {
         {
           where: {
             userId: loggedInUserId,
+            isDeleted: false,
           },
         },
       );
 
       // get the user instance bsed on user's id in cookies
       const userInstance = await db.User.findByPk(req.cookies.loggedInUserId);
-      const userBookedMeetings = await userInstance.getMeeting();
+      const userBookedMeetings = await userInstance.getMeeting({ where: { isDeleted: false } });
 
       const userMtgs = { userBookedMeetings, userTaggedMeetings };
       res.send(userMtgs);
@@ -51,6 +52,8 @@ export default function initBookingsController(db) {
       roomId, startTime, endTime, agenda, attendees,
     } = req.body.meetingDetails;
 
+    console.log('attendees is:');
+    console.log(attendees);
     try {
       const newBookingInstance = await db.Booking.create({
         userId: req.cookies.loggedInUserId,
@@ -61,7 +64,7 @@ export default function initBookingsController(db) {
       });
       attendees.forEach((attendee) => {
         // db.User.addMeetings([newBookingInstance, attendee.id]);
-        newBookingInstance.addUser(attendee.id);
+        newBookingInstance.addAttendee(attendee.id);
       });
     } catch (error) {
       console.log(error);
@@ -85,11 +88,33 @@ export default function initBookingsController(db) {
     }
   };
 
+  const deleteABooking = async (req, res) => {
+    const { bookingId } = req.body;
+    console.log('bookingId is:');
+    console.log(bookingId);
+
+    try {
+      // get the instance of this booking
+      const bookingInstance = await db.Booking.update(
+        { isDeleted: true },
+        {
+          where:
+          { bookingId },
+        },
+      );
+
+      res.send();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     index,
     add,
     bookingsByUserId,
     bookingsByRoomId,
     getMtgAttendees,
+    deleteABooking,
   };
 }
