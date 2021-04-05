@@ -1,13 +1,18 @@
-import cookieParser from 'cookie-parser';
 import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
 import bindRoutes from './routes.mjs';
-import cors from 'cors';
 
 // Initialise Express instance
 const app = express();
 // Set CORS headers
-app.use(cors());
+
+app.use(cors({
+  credentials: true,
+  origin: true,
+}));
+
 // Set the Express view engine to expect EJS templates
 app.set('view engine', 'ejs');
 // Bind cookie parser middleware to parse cookies in requests
