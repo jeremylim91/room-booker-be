@@ -98,6 +98,10 @@ module.exports = {
       agenda: {
         type: Sequelize.TEXT,
       },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -128,10 +132,6 @@ module.exports = {
           model: 'bookings',
           key: 'id',
         },
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
       },
       created_at: {
         allowNull: false,
