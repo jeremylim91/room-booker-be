@@ -25,7 +25,7 @@ export default function initUsersController(db) {
       res.cookie('loggedInEmail', userInstance.email);
       res.cookie('loggedInUserId', userInstance.id);
       res.cookie('loggedInHash', convertUserIdToHash(userInstance.id));
-      if (userInstance.dataValues.isAdmin) res.cookie('isAdmin', userInstance.dataValues.isAdmin);
+      res.cookie('isAdmin', userInstance.dataValues.isAdmin);
       res.send({ auth: true, user: userInstance });
     } catch (err) {
       console.log(err);
