@@ -60,7 +60,7 @@ export default function bindRoutes(app) {
   app.get('/bookings/bookingsBasedOnRoomId/:roomId', BookingsController.bookingsByRoomId);
   app.get('/bookings/all', BookingsController.index);
   app.post('/bookings', BookingsController.add);
-  app.put('/bookings/deleteABooking/:bookingId', BookingsController.deleteABooking);
+  app.put('/bookings/deleteABooking', BookingsController.deleteABooking);
   app.get('/bookings/bookingsByUserId', BookingsController.bookingsByUserId);
   app.get('/bookings/mtgAttendees/:bookingId', BookingsController.getMtgAttendees);
 
