@@ -2,7 +2,7 @@ export default function initBookingsController(db) {
   // display all the bookings related to a specific room
   const index = async (req, res) => {
     try {
-      const bookings = await db.Booking.findAll();
+      const bookings = await db.Booking.findAll({ where: { isDeleted: false } });
       res.send(bookings);
     } catch (error) {
       console.log(error);
@@ -14,6 +14,7 @@ export default function initBookingsController(db) {
         {
           where: {
             roomId: req.params.roomId,
+            isDeleted: false,
           },
         },
       );
@@ -52,8 +53,6 @@ export default function initBookingsController(db) {
       roomId, startTime, endTime, agenda, attendees,
     } = req.body.meetingDetails;
 
-    console.log('attendees is:');
-    console.log(attendees);
     try {
       const newBookingInstance = await db.Booking.create({
         userId: req.cookies.loggedInUserId,
@@ -73,8 +72,6 @@ export default function initBookingsController(db) {
   };
   const getMtgAttendees = async (req, res) => {
     const { bookingId } = req.params;
-    console.log('bookingId is:');
-    console.log(bookingId);
 
     try {
       // get the instance of this booking
@@ -82,6 +79,7 @@ export default function initBookingsController(db) {
 
       // query through table to find all attendees
       const mtgAttendees = await bookingInstance.getAttendee({ where: { isDeleted: false } });
+
       res.send(mtgAttendees);
     } catch (error) {
       console.log(error);
@@ -89,20 +87,32 @@ export default function initBookingsController(db) {
   };
 
   const deleteABooking = async (req, res) => {
+  //  do a check to see if user is an admin, or is the ownwer of this booking
+
     const { bookingId } = req.body;
-    console.log('bookingId is:');
+    console.log('bookingId in delete a booking is:');
     console.log(bookingId);
+    // get the userId from cookies
+    let { loggedInUserId } = req.cookies;
+    loggedInUserId = parseInt(loggedInUserId, 10);
 
     try {
-      // get the instance of this booking
-      const bookingInstance = await db.Booking.update(
-        { isDeleted: true },
-        {
-          where:
-          { bookingId },
-        },
-      );
+      // get a user instanced based on the userId
+      const userInstance = await db.User.findByPk(loggedInUserId);
 
+      // get a booking using the bookingId
+      const bookingInstance = await db.Booking.findByPk(bookingId);
+
+      // if user is not an admin and is not the room booker, don't let him cancel the booking
+      if (userInstance.isAdmin === false && bookingInstance.userId !== loggedInUserId) {
+        console.log('user not allowed becos does not have credentials to delete');
+        res.send('disallow');
+        return;
+      }
+      // edit the col to show it is deleted
+      bookingInstance.isDeleted = true;
+      // save changes to the db
+      await bookingInstance.save();
       res.send();
     } catch (error) {
       console.log(error);
