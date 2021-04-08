@@ -27,14 +27,13 @@ module.exports = {
       username: 'jon',
       email: 'jon@gmail.com',
       password: hasher.getHashedString('password1'),
-      is_admin: false,
+      is_admin: true,
       created_at: new Date(),
       updated_at: new Date(),
     });
 
     try {
       const result = await queryInterface.bulkInsert('users', usersList);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -75,7 +74,6 @@ module.exports = {
 
     try {
       const result = await queryInterface.bulkInsert('rooms', roomsList);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
