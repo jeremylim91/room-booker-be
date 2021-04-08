@@ -26,8 +26,6 @@ export default function initBookingsController(db) {
 
   const bookingsByUserId = async (req, res) => {
     const { loggedInUserId } = req.cookies;
-    console.log('loggedInUserId is:');
-    console.log(loggedInUserId);
     try {
       const userTaggedMeetings = await db.Booking.findAll(
         {
@@ -90,8 +88,7 @@ export default function initBookingsController(db) {
   //  do a check to see if user is an admin, or is the ownwer of this booking
 
     const { bookingId } = req.body;
-    console.log('bookingId in delete a booking is:');
-    console.log(bookingId);
+
     // get the userId from cookies
     let { loggedInUserId } = req.cookies;
     loggedInUserId = parseInt(loggedInUserId, 10);
@@ -105,7 +102,6 @@ export default function initBookingsController(db) {
 
       // if user is not an admin and is not the room booker, don't let him cancel the booking
       if (userInstance.isAdmin === false && bookingInstance.userId !== loggedInUserId) {
-        console.log('user not allowed becos does not have credentials to delete');
         res.send('disallow');
         return;
       }
@@ -135,13 +131,11 @@ export default function initBookingsController(db) {
 
       // if user is not an admin and is not the room booker, don't let him cancel the booking
       if (userInstance.isAdmin === false && bookingInstance.userId !== loggedInUserId) {
-        console.log('user not allowed becos does not have credentials to delete');
         res.send('disallow');
         return;
       }
       // update the bookings table that the agenda has changed
       bookingInstance.agenda = updatedAgenda;
-      console.log(bookingInstance);
       await bookingInstance.save();
 
       // update the thru table to remove attendees
