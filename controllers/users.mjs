@@ -55,6 +55,8 @@ export default function initUsersController(db) {
   };
   const deleteUser = async (req, res) => {
     const { usersToDelete } = req.body;
+    console.log('usersToDelete is:');
+    console.log(usersToDelete);
 
     const listOfUserIdsToDelete = [];
     usersToDelete.forEach((elem) => listOfUserIdsToDelete.push(elem.id));
