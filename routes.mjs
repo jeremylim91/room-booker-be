@@ -49,21 +49,21 @@ export default function bindRoutes(app) {
   const UsersController = initUsersController(db);
   app.put('/signIn', UsersController.signIn);
   app.put('/signOut', UsersController.signOut);
-  app.get('/users/findAll', UsersController.index);
-  app.put('/users/delete', UsersController.deleteUser);
-  app.post('/users/create', UsersController.createUser);
+  app.get('/users/findAll', checkLoggedIn, UsersController.index);
+  app.put('/users/delete', checkLoggedIn, UsersController.deleteUser);
+  app.post('/users/create', checkLoggedIn, UsersController.createUser);
 
   const RoomsController = initRoomsController(db);
   app.get('/rooms', RoomsController.index);
 
   const BookingsController = initBookingsController(db);
-  app.get('/bookings/bookingsBasedOnRoomId/:roomId', BookingsController.bookingsByRoomId);
-  app.get('/bookings/all', BookingsController.index);
-  app.post('/bookings', BookingsController.add);
-  app.put('/bookings/deleteABooking', BookingsController.deleteABooking);
-  app.get('/bookings/bookingsByUserId', BookingsController.bookingsByUserId);
-  app.get('/bookings/mtgAttendees/:bookingId', BookingsController.getMtgAttendees);
-  app.put('/bookings/updateBooking', BookingsController.updateBooking);
+  app.get('/bookings/bookingsBasedOnRoomId/:roomId', checkLoggedIn, BookingsController.bookingsByRoomId);
+  app.get('/bookings/all', checkLoggedIn, BookingsController.index);
+  app.post('/bookings', checkLoggedIn, BookingsController.add);
+  app.put('/bookings/deleteABooking', checkLoggedIn, BookingsController.deleteABooking);
+  app.get('/bookings/bookingsByUserId', checkLoggedIn, BookingsController.bookingsByUserId);
+  app.get('/bookings/mtgAttendees/:bookingId', checkLoggedIn, BookingsController.getMtgAttendees);
+  app.put('/bookings/updateBooking', checkLoggedIn, BookingsController.updateBooking);
 
   // special JS page. Include the webpack index.html file
   app.get('/home', (request, response) => {
