@@ -63,6 +63,7 @@ export default function bindRoutes(app) {
   app.put('/bookings/deleteABooking', BookingsController.deleteABooking);
   app.get('/bookings/bookingsByUserId', BookingsController.bookingsByUserId);
   app.get('/bookings/mtgAttendees/:bookingId', BookingsController.getMtgAttendees);
+  app.put('/bookings/updateBooking', BookingsController.updateBooking);
 
   // special JS page. Include the webpack index.html file
   app.get('/home', (request, response) => {
