@@ -54,6 +54,7 @@ export default function bindRoutes(app) {
   app.post('/users/create', checkLoggedIn, UsersController.createUser);
 
   const RoomsController = initRoomsController(db);
+  // don't apply middleware cos guests are allowed to see rooms
   app.get('/rooms', RoomsController.index);
 
   const BookingsController = initBookingsController(db);
