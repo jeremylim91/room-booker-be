@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.mjs",
-    "watch": "nodemon index.mjs"
+    "watch": "nodemon index.mjs",
+    "dbs-migrate": "./node_modules/.bin/models/index.mjs && ./node_modules/.bin/seeders/20201217124408-fake-data.js",
+    "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -23,10 +26,10 @@
     "eslint": "^7.15.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
-    "nodemon": "^2.0.6",
-    "sequelize-cli": "^6.2.0"
+    "nodemon": "^2.0.6"
   },
   "dependencies": {
+    "sequelize-cli": "^6.2.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "ejs": "^3.1.5",
